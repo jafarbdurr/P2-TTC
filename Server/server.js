@@ -3,7 +3,7 @@ const { Server } = require("socket.io");
 
 const httpServer = createServer();
 const io = new Server(httpServer, {
-  cors: "http://localhost:5174/",
+  cors: "https://p2-tic-tac-toe.vercel.app/",
 });
 
 const allUsers = {};
@@ -79,6 +79,13 @@ io.on("connection", (socket) => {
         break;
       }
     }
+  });
+
+  socket.on("message:new", (message) => {
+    io.emit("message:update", {
+      from: socket.handshake.auth.fullName,
+      message,
+    });
   });
 });
 
