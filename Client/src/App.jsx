@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useTheme } from './context/ThemeContext';
+// import ThemeToggleButton from './components/ThemeToggleButton';
 import "./App.css";
 import Square from "./Square/Square";
 import { io } from "socket.io-client";
@@ -20,6 +22,9 @@ const App = () => {
   const [playerName, setPlayerName] = useState("");
   const [opponentName, setOpponentName] = useState(null);
   const [playingAs, setPlayingAs] = useState(null);
+  // theme
+  // const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   const checkWinner = () => {
     // row dynamic
@@ -76,12 +81,12 @@ const App = () => {
 
   const takePlayerName = async () => {
     const result = await Swal.fire({
-      title: "Enter your name",
+      title: "Masukkan Nama",
       input: "text",
       showCancelButton: true,
       inputValidator: (value) => {
         if (!value) {
-          return "You need to write something!";
+          return "Nama tidak boleh kosong!";
         }
       },
     });
@@ -143,7 +148,7 @@ const App = () => {
     return (
       <div className="main-div">
         <button onClick={playOnlineClick} className="playOnline">
-          Play Online
+          Mulai Bermain
         </button>
       </div>
     );
@@ -152,25 +157,26 @@ const App = () => {
   if (playOnline && !opponentName) {
     return (
       <div className="waiting">
-        <p>Waiting for opponent</p>
+        <p>Menunggu lawan bermain</p>
       </div>
     );
   }
 
   return (
-    <div className="main-div">
+    <div className={`app ${theme}`}>
+      <button onClick={toggleTheme} className="buttonTheme">
+        Ganti Tema {theme === 'light' ? 'Dark' : 'Light'}
+      </button>
       <div className="move-detection">
         <div
-          className={`left ${
-            currentPlayer === playingAs ? "current-move-" + currentPlayer : ""
-          }`}
+          className={`left ${currentPlayer === playingAs ? "current-move-" + currentPlayer : ""
+            }`}
         >
           {playerName}
         </div>
         <div
-          className={`right ${
-            currentPlayer !== playingAs ? "current-move-" + currentPlayer : ""
-          }`}
+          className={`right ${currentPlayer !== playingAs ? "current-move-" + currentPlayer : ""
+            }`}
         >
           {opponentName}
         </div>
@@ -202,21 +208,20 @@ const App = () => {
           finishedState !== "opponentLeftMatch" &&
           finishedState !== "draw" && (
             <h3 className="finished-state">
-              {finishedState === playingAs ? "You " : finishedState} won the
-              game
+              {finishedState === playingAs ? "Kamu " : finishedState} Menang
             </h3>
           )}
         {finishedState &&
           finishedState !== "opponentLeftMatch" &&
           finishedState === "draw" && (
-            <h3 className="finished-state">It's a Draw</h3>
+            <h3 className="finished-state">Seri</h3>
           )}
       </div>
       {!finishedState && opponentName && (
-        <h2>You are playing against {opponentName}</h2>
+        <h2>Kamu sedang melawan {opponentName}</h2>
       )}
       {finishedState && finishedState === "opponentLeftMatch" && (
-        <h2>You won the match, Opponent has left</h2>
+        <h2>Kamu menang, Lawan sudah pergi</h2>
       )}
     </div>
   );

@@ -1,3 +1,28 @@
+.app {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5vh;
+  flex-direction: column;
+}
+
+.app.light {
+  background-color: #1f1f2f;
+  color: white;
+}
+
+.buttonTheme {
+  padding: 5px;
+  background-color: violet;
+  outline: 1px solid #fff;
+}
+
+.app.dark {
+  background-color: #F9F6EE;
+  color: #1f1f2f;
+}
+
 .main-div {
   display: flex;
   justify-content: center;
@@ -20,6 +45,10 @@
 
 .water-background {
   background-color: #4b495f;
+}
+
+.light-background {
+  background-color: antiquewhite;
 }
 
 .game-heading {
